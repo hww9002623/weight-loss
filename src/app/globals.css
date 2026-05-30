@@ -1,0 +1,313 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #2d6a4f;
+  --color-primary-light: #40916c;
+  --color-primary-dark: #1b4332;
+  --color-accent: #52b788;
+  --color-bg: #f8faf9;
+  --color-bg-sidebar: #f0f4f2;
+  --color-surface: #ffffff;
+  --color-text: #1a1a2e;
+  --color-text-muted: #5c6370;
+  --color-border: #dce3df;
+  --color-tip-bg: #edf7f1;
+  --color-tip-border: #95d5b2;
+  /* iOS 安全区域 */
+  --sat: env(safe-area-inset-top);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
+  --sar: env(safe-area-inset-right);
+}
+
+@theme inline {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  height: -webkit-fill-available;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-noto-sans), 'Noto Sans SC', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  min-height: -webkit-fill-available;
+  overscroll-behavior-y: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 16px; /* 防止 iOS 自动缩放 */
+}
+
+/* iOS 触摸反馈 */
+@media (hover: none) and (pointer: coarse) {
+  button:active,
+  [role="button"]:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+    transition: opacity 0.1s, transform 0.1s;
+  }
+}
+
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* 章节切换 — 左右滑动 */
+.chapter-exit-left {
+  animation: slideOutLeft 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.chapter-enter-right {
+  animation: slideInRight 0.3s cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+.chapter-exit-right {
+  animation: slideOutRight 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.chapter-enter-left {
+  animation: slideInLeft 0.3s cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+@keyframes slideOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(-40px); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(40px); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* 顶部进度条 */
+.progress-bar {
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 导航按钮 */
+.nav-btn {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-btn:hover {
+  transform: translateX(var(--nav-dir, 0));
+}
+
+/* 内容段落逐行渐入 */
+.content-para {
+  opacity: 0;
+  animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.content-para:nth-child(1) { animation-delay: 0.05s; }
+.content-para:nth-child(2) { animation-delay: 0.1s; }
+.content-para:nth-child(3) { animation-delay: 0.15s; }
+.content-para:nth-child(4) { animation-delay: 0.2s; }
+.content-para:nth-child(5) { animation-delay: 0.25s; }
+.content-para:nth-child(6) { animation-delay: 0.3s; }
+.content-para:nth-child(7) { animation-delay: 0.35s; }
+.content-para:nth-child(8) { animation-delay: 0.4s; }
+
+/* 贴士和要点卡片 */
+.tip-card {
+  opacity: 0;
+  animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+.takeaway-card {
+  opacity: 0;
+  animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+/* 侧边栏滚动条 */
+aside::-webkit-scrollbar {
+  width: 4px;
+}
+
+aside::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+aside::-webkit-scrollbar-thumb {
+  background: #dce3df;
+  border-radius: 2px;
+}
+
+/* iOS 侧边栏弹性滚动 */
+aside {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 侧边栏移动端隐藏时不拦截触摸 */
+@media (max-width: 1023px) {
+  .sidebar-closed {
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+  }
+}
+
+/* iOS 底部安全区域 */
+.ios-safe-bottom {
+  padding-bottom: max(1rem, var(--sab));
+}
+
+/* iOS 顶部安全区域 */
+.ios-safe-top {
+  padding-top: max(0px, var(--sat));
+}
+
+/* 移动端底部导航栏 */
+.mobile-bottom-nav {
+  padding-bottom: max(0.5rem, var(--sab));
+}
+
+/* 滑动手势区域 */
+.swipe-area {
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 禁用移动端双击缩放 */
+.no-zoom {
+  touch-action: manipulation;
+}
+
+/* iOS 风格的弹性滚动 */
+.elastic-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+/* 隐藏滚动条但保留功能 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* iOS 风格的卡片阴影 */
+.ios-card-shadow {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08),
+              0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* 移动端优化的触摸目标 */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* iOS 风格的按钮按下效果 */
+.ios-btn-press:active {
+  transform: scale(0.97);
+  opacity: 0.8;
+  transition: transform 0.1s, opacity 0.1s;
+}
+
+/* 移动端章节内容优化 */
+@media (max-width: 640px) {
+  .content-para {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+}
+
+/* 横屏适配 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+
+/* 减少动画（用户偏好） */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
